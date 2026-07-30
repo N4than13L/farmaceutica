@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# Salvia Farmacéutica — Landing Page
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Landing page mobile-first para una pequeña farmacéutica, construida con
+**React + Vite**, **Bootstrap 5** (base de estilos y grid) y **Swiper.js**
+(carruseles de productos y testimonios).
 
-## Available Scripts
+## Requisitos
+- Node.js 18 o superior
+- npm
 
-In the project directory, you can run:
+## Instalación
 
-### `npm start`
+```bash
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Desarrollo
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+npm run dev
+```
 
-### `npm test`
+Abre la URL que muestra la terminal (por defecto http://localhost:5173).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Build de producción
 
-### `npm run build`
+```bash
+npm run build
+npm run preview   # para previsualizar el build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Estructura
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+  components/
+    NavBar.jsx        Barra de navegación responsive (colapsable en móvil)
+    Hero.jsx           Sección principal con ilustración SVG de frasco ámbar
+    ProductLines.jsx    Carrusel Swiper con las líneas de medicamentos
+    WhyUs.jsx           Cuadrícula de beneficios estilo "blíster"
+    Testimonials.jsx    Carrusel Swiper de testimonios (con autoplay)
+    Contact.jsx         Formulario de contacto + panel informativo
+    Footer.jsx          Pie de página
+    Reveal.jsx          Anima un bloque al entrar en scroll (gsap + ScrollTrigger)
+    RevealStagger.jsx   Igual que Reveal, pero en cascada para cuadrículas
+  lib/
+    gsap.js             Registro de gsap/ScrollTrigger y helper de accesibilidad
+  index.css            Tokens de diseño (colores, tipografías) y estilos globales
+  App.jsx              Composición de las secciones
+  main.jsx             Punto de entrada, importa Bootstrap y estilos propios
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Animaciones de scroll (GSAP)
 
-### `npm run eject`
+Cada sección (encabezados, carruseles, cuadrícula de beneficios, panel de
+contacto, columnas del footer) está envuelta en `Reveal` o `RevealStagger`,
+que usan **GSAP + ScrollTrigger** para:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Animar el contenido (fade + slide-up) cuando **entra** en el viewport al
+  bajar.
+- **Revertir** esa animación cuando se vuelve a subir y se pasa el punto de
+  inicio (`toggleActions: 'play none none reverse'`), por lo que el efecto
+  se ve tanto bajando como subiendo.
+- El Hero además tiene una animación de entrada al cargar la página (título,
+  texto, botones y estadísticas en cascada) y un parallax sutil del frasco
+  ámbar atado directamente a la posición del scroll (`scrub`), que por
+  naturaleza se mueve igual en ambas direcciones.
+- Todo respeta `prefers-reduced-motion`: si el sistema operativo del
+  visitante lo tiene activado, `Reveal`/`RevealStagger`/`Hero` no ejecutan
+  ninguna animación de GSAP y el contenido se muestra directamente.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Para ajustar la intensidad o el punto de disparo de una animación, cada
+`Reveal`/`RevealStagger` acepta props opcionales: `y` (desplazamiento en px),
+`duration`, `delay`, `stagger` (solo en `RevealStagger`) y `start` (punto de
+disparo de ScrollTrigger, por defecto `'top 85%'`).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Personalización rápida
 
-## Learn More
+- **Colores y tipografías**: todo está centralizado como variables CSS al
+  inicio de `src/index.css` (`:root { --color-... }`), para poder cambiar la
+  identidad visual sin tocar los componentes.
+- **Contenido**: los textos de productos, beneficios y testimonios están en
+  arreglos de datos al inicio de cada componente (`products`, `benefits`,
+  `testimonials`) — edítalos directamente ahí.
+- **Formulario de contacto**: actualmente simula el envío en el cliente
+  (`Contact.jsx`, función `handleSubmit`). Para producción, conéctalo a tu
+  backend, a un servicio como Formspree/Resend, o a tu CRM.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Notas técnicas
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- El diseño es **mobile-first**: los estilos base están pensados para móvil
+  y se amplían con `min-width` en breakpoints de Bootstrap (`sm`, `md`, `lg`).
+- Los carruseles de Swiper usan sus propios módulos (`Navigation`,
+  `Pagination`, `Autoplay`, `A11y`) importados solo donde se necesitan, para
+  mantener el bundle ligero.
+- Se respeta `prefers-reduced-motion` y el foco de teclado es visible en
+  todos los elementos interactivos.
